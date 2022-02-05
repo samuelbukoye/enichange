@@ -3,6 +3,7 @@ import Login from './Routes/Login/Login';
 import Transaction from './Routes/Transaction/Transaction';
 import Signup from './Routes/Signup/Signup';
 import UserPage from './Routes/UserPage/UserPage';
+import NotFound from './Routes/NotFound/NotFound';
 
 const Start = () => {
   return (
@@ -12,7 +13,7 @@ const Start = () => {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="transaction" element={<Transaction />} />
-        <Route path="*" element={<h1>not found</h1>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

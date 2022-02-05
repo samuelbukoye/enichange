@@ -194,13 +194,15 @@ const Transaction = () => {
                 </TCRadioDiv>
               </TCRadioWrap>
             </TFCurrency>
-            <ReceivedDiv>
-              <Balancep>{receiver} will receive</Balancep>
-              <ReceivedValue>{receivedValue}</ReceivedValue>
-              <Balancep>
-                at {enchangeRate} {sendCurrency}/{receiveCurrency}
-              </Balancep>
-            </ReceivedDiv>
+            {sendCurrency && receiveCurrency && (
+              <ReceivedDiv>
+                <Balancep>{receiver} will receive</Balancep>
+                <ReceivedValue>{receivedValue}</ReceivedValue>
+                <Balancep>
+                  at {enchangeRate} {sendCurrency}/{receiveCurrency}
+                </Balancep>
+              </ReceivedDiv>
+            )}
           </TFInnerDiv>
         </TFormDiv>
         <FormButton onClick={(e) => onSubmit(e)}>Send</FormButton>
