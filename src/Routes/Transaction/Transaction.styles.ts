@@ -1,122 +1,84 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const UserPageWrapper = styled.main`
-  padding: 0 2em 2em;
-  /* box-shadow: 4px 4px 10px #453a80, 2px 2px 5px #262041; */
-`;
-
-// Header
-
-// User Info
-
-export const UserInfo = styled.section`
-  width: 100%;
-  position: relative;
-  /* left: -2em; */
-  /* background-color: #06063d; */
-  /* color: #ffffff; */
-  color:black
-  padding: 2em;
-`;
-
-export const Welcome = styled.h3`
-  font-size: 1.5em;
-`;
-
-export const BalanceText = styled.p`
-  margin-top: 1.5em;
-  text-align: center;
-`;
-
-export const AccountInfoWrap = styled.div`
-  margin: 1em auto;
+export const TFormDiv = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
   grid-gap: 1em;
 `;
 
-export const AccountInfoCard = styled.div`
-  text-align: center;
-  background-color: #06063d;
-  color: #ffffff;
-  padding: 1em 3em;
-  border-radius: 10px;
-`;
+export const TFInnerDiv = styled.div``;
 
-export const Currency = styled.h5``;
+export const TFCurrency = styled.div``;
+export const TFCTitle = styled.h4``;
+export const TCRadioWrap = styled.div``;
 
-export const Balance = styled.p`
-  font-size: 1.5em;
-`;
-
-// transactions header
-
-export const UPHHeader = styled.header`
+export const TCRadioDiv = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-bottom: 2em;
+  cursor: pointer;
+  padding: 5px;
 `;
 
-export const UPH1 = styled.h2`
-  font-size: 28px;
+export const TCRadioSpan = styled.span<{ active: boolean }>`
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  background-color: ${(props) => (props.active ? '#2196F3' : 'lightgrey')};
+  border-radius: 50%;
+  margin-right: 10px;
 `;
 
-export const UPHButton = styled.button`
+export const TCValue = styled.span`
+  cursor: pointer;
+`;
+
+export const BalanceP = styled.p`
   font-size: 12px;
-  text-decoration: none;
-  padding: 1em 1.5em;
-  color: #ffffff;
-  background-color: #3636dd;
-  border: none;
-  border-radius: 5px;
 `;
-
-export const UPHNavLink = styled(NavLink)`
-  text-decoration: none;
-  color: #ffffff;
-  text-transform: uppercase;
-`;
-
-// Transactions
-
-export const Transactions = styled.section`
+export const InputDiv = styled.div`
+  margin: 10px 0;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  font-size: 12px;
+  grid-template-columns: 1fr 3fr;
 `;
-
-export const TransactionsCol = styled.h4`
-  border-top: 1px solid #e2e0e0;
-  padding: 1em;
-`;
-
-export const TransactionsCell = styled.p`
-  border-top: 1px solid #e2e0e0;
-  padding: 1em;
-`;
-
-// Transactions Footer
-
-export const TransactionsFooter = styled.footer`
+export const InputLabel = styled.label`
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 10px;
+  color: grey;
+  background-color: lightblue;
   display: flex;
-  justify-content: flex-end;
-  padding-top: 1em;
+  align-items: center;
+  justify-content: center;
 `;
-export const TFButton = styled.button`
-  display: flex;
-  justify-content: space-around;
-  font-size: 12px;
-  text-transform: uppercase;
-  padding: 0.5em 1em;
-  color: 3636dd;
-  background-color: inherit;
-  border: 1px solid #3636dd;
-  border-radius: 5px;
-`;
-export const TFSpan = styled.span``;
+export const InputStyled = styled.input<{ value: number; balance: number }>`
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1em;
+  background-color: #dddfe7;
+  color: #0d1022;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-color: ${(p) =>
+    p.value > p.balance || p.value < 1 ? 'pink' : 'green'};
 
-export const TFI = styled.i`
-  padding-left: 0.5em;
+  :hover {
+    background-color: #d4d7e9;
+  }
+  &:focus {
+    background-color: #c3c6d8;
+    outline: none;
+  }
+`;
+
+export const ReceivedDiv = styled.div`
+  margin-top: 20px;
+`;
+
+export const Balancep = styled.p`
+  margin-top: 0px;
+  margin-bottom: 3px;
+`;
+export const ReceivedValue = styled.h3`
+  margin-top: 0px;
+  margin-bottom: 3px;
 `;
