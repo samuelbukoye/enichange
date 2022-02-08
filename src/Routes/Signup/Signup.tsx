@@ -73,7 +73,7 @@ const Signup = () => {
       return;
     } catch (error) {
       setIsLoading(false);
-
+      console.log(error);
       setError('Invalid signup credentials!');
       setTimeout(() => {
         setError('');
@@ -128,7 +128,7 @@ const Signup = () => {
 
   // username
   const validateUserName = useCallback(() => {
-    if (!(userName.length < 4)) {
+    if (userName.length < 4) {
       setErrorUserName('username must be at least 4 characters');
       return false;
     }

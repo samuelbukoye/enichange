@@ -6,7 +6,7 @@ const TransactionsReducer = (state = INITIAL_STATE, action: ActionTypes) => {
     case 'TRANSACTIONS':
       return action.payload;
     case 'LOGOUT':
-      return {};
+      return [];
     default:
       return state;
   }

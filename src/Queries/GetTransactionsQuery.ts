@@ -3,7 +3,7 @@ import { store } from '../store';
 import { Url } from '../utils';
 
 export const GetTransactionsQuery = async () => {
-  const url = `${Url}/login`;
+  const url = `${Url}/transactions`;
   const token = await store.getState().TokenReducer;
 
   try {

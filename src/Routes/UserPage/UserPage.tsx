@@ -22,30 +22,101 @@ import {
   UserPageWrapper,
   Welcome,
 } from './UserPage.styles';
+import { GetTransactionsQuery } from '../../Queries/GetTransactionsQuery';
+import { useDispatch } from 'react-redux';
+import { GetUserInfoQuery } from '../../Queries/GetUserInfoQuery';
 
 const UserPage = () => {
-  const [userData] = useState(store.getState().UserDataReducer);
-  const [userTransactions] = useState(store.getState().TransactionsReducer);
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState(store.getState().UserDataReducer);
+  const [userTransactions, setUserTransactions] = useState(
+    store.getState().TransactionsReducer
+  );
 
+  const getAllUserInfo = async () => {
+    setIsLoading(true);
+    try {
+      const userResponse = await GetUserInfoQuery();
+      const transactionResponse = await GetTransactionsQuery();
+      setUserData(userResponse.data);
+      setUserTransactions(transactionResponse.data);
+      dispatch({
+        type: 'USER',
+        payload: userResponse.data,
+      });
+      dispatch({
+        type: 'TRANSACTIONS',
+        payload: transactionResponse.data,
+      });
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllUserInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const formatDate = (datestring: Date) => {
+    var d = new Date(datestring);
+    var months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    const year = d.getFullYear();
+    const month = months[d.getMonth()];
+    const day = d.getDate();
+    const hour = d.getHours();
+    const minute = d.getMinutes();
+
+    return `${month} ${day}, ${year} ${hour}:${minute}`;
+  };
+
+  console.log(userTransactions);
+  const getUserName = (userName: string) =>
+    userName === userData.userName ? 'You' : userName;
   return (
     <Layout>
       <UserPageWrapper>
         {/* User Info */}
         <UserInfo>
-          <Welcome>Welcome Back Samuel</Welcome>
+          {/* Transactions Footer */}
+          <TransactionsFooter>
+            <Welcome>Welcome Back {userData.userName}</Welcome>
+            <TFButton onClick={getAllUserInfo}>
+              <TFSpan>Refresh</TFSpan>
+              <TFI
+                className={`fa  fa-refresh ${isLoading && 'fa-spin'}`}
+                aria-hidden="true"
+              ></TFI>
+            </TFButton>
+          </TransactionsFooter>
           <BalanceText>Your Balance</BalanceText>
           <AccountInfoWrap>
             <AccountInfoCard>
-              <Currency>Naira</Currency>
-              <Balance>&#8358;300.00</Balance>
+              <Currency>Pounds</Currency>
+              <Balance>&#8358;{userData.GBP}</Balance>
             </AccountInfoCard>
             <AccountInfoCard>
               <Currency>USDollars</Currency>
-              <Balance>&#36;300.00</Balance>
+              <Balance>&#36;{userData.USD}</Balance>
             </AccountInfoCard>
             <AccountInfoCard>
               <Currency>Euros</Currency>
-              <Balance>&euro;300.00</Balance>
+              <Balance>&euro;{userData.EUR}</Balance>
             </AccountInfoCard>
           </AccountInfoWrap>
         </UserInfo>
@@ -53,7 +124,10 @@ const UserPage = () => {
         <UPHHeader>
           <UPH1>Transactions</UPH1>
           <UPHButton>
-            <UPHNavLink to="/transaction">New Transaction</UPHNavLink>
+            <UPHNavLink to="/transaction">
+              <TFSpan>New Transaction</TFSpan>
+              <TFI className="fa  fa-plus" aria-hidden="true"></TFI>
+            </UPHNavLink>
           </UPHButton>
         </UPHHeader>
 
@@ -67,41 +141,37 @@ const UserPage = () => {
           <TransactionsCol>Currency</TransactionsCol>
           <TransactionsCol>Created At</TransactionsCol>
           <TransactionsCol>Updated At</TransactionsCol>
-
           {/* Transactions  */}
-
-          <TransactionsCell>1</TransactionsCell>
-          <TransactionsCell>John</TransactionsCell>
-          <TransactionsCell>You</TransactionsCell>
-          <TransactionsCell>+500.00</TransactionsCell>
-          <TransactionsCell>EUR</TransactionsCell>
-          <TransactionsCell>Apr 16, 2022</TransactionsCell>
-          <TransactionsCell>Apr 17, 2022</TransactionsCell>
-
-          <TransactionsCell>2</TransactionsCell>
-          <TransactionsCell>Luke</TransactionsCell>
-          <TransactionsCell>You</TransactionsCell>
-          <TransactionsCell>+700.00</TransactionsCell>
-          <TransactionsCell>CAD</TransactionsCell>
-          <TransactionsCell>Apr 19, 2022</TransactionsCell>
-          <TransactionsCell>Apr 21, 2022</TransactionsCell>
-
-          <TransactionsCell>3</TransactionsCell>
-          <TransactionsCell>You</TransactionsCell>
-          <TransactionsCell>John</TransactionsCell>
-          <TransactionsCell>+200.00</TransactionsCell>
-          <TransactionsCell>NGN</TransactionsCell>
-          <TransactionsCell>Apr 20, 2022</TransactionsCell>
-          <TransactionsCell>Apr 22, 2022</TransactionsCell>
+          {userTransactions
+            .map((transaction: any, index: number) => (
+              <>
+                <TransactionsCell>{index + 1}</TransactionsCell>
+                <TransactionsCell>
+                  {getUserName(transaction.senderUserName)}
+                </TransactionsCell>
+                <TransactionsCell>
+                  {getUserName(transaction.receiverUserName)}
+                </TransactionsCell>
+                <TransactionsCell credit={transaction.credit}>
+                  {transaction.credit
+                    ? `+${transaction.receiveAmount}`
+                    : `+${transaction.sendAmount}`}
+                </TransactionsCell>
+                <TransactionsCell>
+                  {transaction.credit
+                    ? `${transaction.receiveCurrency}`
+                    : `${transaction.sendCurrency}`}
+                </TransactionsCell>
+                <TransactionsCell>
+                  {formatDate(transaction.createdAt)}
+                </TransactionsCell>
+                <TransactionsCell>
+                  {formatDate(transaction.updatedAt)}
+                </TransactionsCell>
+              </>
+            ))
+            .reverse()}
         </Transactions>
-
-        {/* Transactions Footer */}
-        <TransactionsFooter>
-          <TFButton>
-            <TFSpan>More</TFSpan>{' '}
-            <TFI className="fa fa-angle-down" aria-hidden="true"></TFI>
-          </TFButton>
-        </TransactionsFooter>
       </UserPageWrapper>
     </Layout>
   );

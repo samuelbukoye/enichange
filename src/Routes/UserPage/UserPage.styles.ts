@@ -71,6 +71,13 @@ export const UPHButton = styled.button`
   border: none;
   border-radius: 5px;
   padding: 0;
+  display: flex;
+  align-items: center;
+  box-shadow: 1px 0px 2px #453a80, 0.5px 0px 1px #262041;
+
+  :hover {
+    box-shadow: 0.5px 0px 1px #262041;
+  }
 `;
 
 export const UPHNavLink = styled(NavLink)`
@@ -94,31 +101,42 @@ export const TransactionsCol = styled.h4`
   padding: 1em;
 `;
 
-export const TransactionsCell = styled.p`
+export const TransactionsCell = styled.p<{ credit?: boolean }>`
   border-top: 1px solid #e2e0e0;
   padding: 1em;
+
+  color: ${(p) =>
+    p.credit === true ? 'green' : p.credit === false ? 'red' : 'inherit'};
 `;
 
 // Transactions Footer
 
 export const TransactionsFooter = styled.footer`
   display: flex;
-  justify-content: flex-end;
-  padding-top: 1em;
+  justify-content: space-between;
+  align-items: center;
+  height: min-content;
 `;
 export const TFButton = styled.button`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
   font-size: 12px;
   text-transform: uppercase;
-  padding: 0.5em 1em;
-  color: 3636dd;
-  background-color: inherit;
-  border: 1px solid #3636dd;
+  padding: 1em 1.5em;
+  height: min-content;
+  color: darkblue;
+  background-color: lightgreen;
+  border: none;
   border-radius: 5px;
-`;
-export const TFSpan = styled.span``;
+  box-shadow: 1px 0px 2px #453a80, 0.5px 0px 1px #262041;
 
-export const TFI = styled.i`
-  padding-left: 0.5em;
+  :hover {
+    box-shadow: 0.5px 0px 1px #262041;
+  }
 `;
+export const TFSpan = styled.span`
+  padding-right: 0.5em;
+`;
+
+export const TFI = styled.i``;
