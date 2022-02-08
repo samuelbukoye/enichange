@@ -66,14 +66,16 @@ export const UPH1 = styled.h2`
 export const UPHButton = styled.button`
   font-size: 12px;
   text-decoration: none;
-  padding: 1em 1.5em;
   color: #ffffff;
   background-color: #3636dd;
   border: none;
   border-radius: 5px;
+  padding: 0;
 `;
 
 export const UPHNavLink = styled(NavLink)`
+  display: block;
+  padding: 1em 1.5em;
   text-decoration: none;
   color: #ffffff;
   text-transform: uppercase;

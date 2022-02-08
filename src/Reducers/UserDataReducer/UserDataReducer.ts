@@ -5,6 +5,8 @@ const UserDataReducer = (state = INITIAL_STATE, action: ActionTypes) => {
   switch (action.type) {
     case 'USER':
       return action.payload;
+    case 'LOGOUT':
+      return {};
     default:
       return state;
   }

@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+import { store } from '../../store';
 import Layout from '../../Components/Layout/Layout';
 import {
   AccountInfoCard,
@@ -22,6 +24,9 @@ import {
 } from './UserPage.styles';
 
 const UserPage = () => {
+  const [userData] = useState(store.getState().UserDataReducer);
+  const [userTransactions] = useState(store.getState().TransactionsReducer);
+
   return (
     <Layout>
       <UserPageWrapper>
@@ -48,7 +53,7 @@ const UserPage = () => {
         <UPHHeader>
           <UPH1>Transactions</UPH1>
           <UPHButton>
-            <UPHNavLink to="#">New Transaction</UPHNavLink>
+            <UPHNavLink to="/transaction">New Transaction</UPHNavLink>
           </UPHButton>
         </UPHHeader>
 

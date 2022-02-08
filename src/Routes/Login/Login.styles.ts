@@ -20,6 +20,13 @@ export const FormTitle = styled.h2`
   text-align: center;
 `;
 
+export const ErrorMessage = styled.h4`
+  text-transform: uppercase;
+  font-size: 2em;
+  color: red;
+  text-align: center;
+`;
+
 export const InputContainer = styled.div`
   margin: 2.5em 0 0.2em;
 `;

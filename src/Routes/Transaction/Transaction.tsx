@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
+import ButtonWithLoader from '../../Components/ButtonWithLoader/ButtonWithLoader';
 import Layout from '../../Components/Layout/Layout';
-import { FormButton, FormTitle, FormWrapper } from '../Login/Login.styles';
+import { FormTitle, FormWrapper } from '../Login/Login.styles';
 import { MessageStyle } from '../Signup/Signup.styles';
 import {
   Balancep,
@@ -24,6 +25,7 @@ const Transaction = () => {
   const onSubmit = (e: any) => {
     e.preventDefault();
   };
+  const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState(2345.0);
   const [sendCurrency, setSendCurrency] = useState('');
   const [receiveCurrency, setReceiveCurrency] = useState('');
@@ -45,7 +47,6 @@ const Transaction = () => {
 
   const handleValueChange = useCallback(() => {
     if (sendValue < 1) {
-      console.log('hhii');
       setSendValueErr('Must be a positive value');
       return;
     } else if (sendValue > balance) {
@@ -205,7 +206,11 @@ const Transaction = () => {
             )}
           </TFInnerDiv>
         </TFormDiv>
-        <FormButton onClick={(e) => onSubmit(e)}>Send</FormButton>
+        <ButtonWithLoader
+          name="SEND"
+          isLoading={isLoading}
+          onClick={(e: any) => onSubmit(e)}
+        />
       </FormWrapper>
     </Layout>
   );

@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import validator from 'validator';
 import ButtonWithLoader from '../../Components/ButtonWithLoader/ButtonWithLoader';
 import Layout from '../../Components/Layout/Layout';
+import { SignupQuery } from '../../Queries/SignupQuery';
 import {
+  ErrorMessage,
   FFP,
   FormFooter,
   FormTitle,
@@ -15,35 +20,79 @@ import {
 import { MessageStyle } from './Signup.styles';
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [validating, setValidating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [firstName, setFirstName] = useState('');
   const [errorFName, setErrorFName] = useState('');
   const [lastName, setLastName] = useState('');
   const [errorLName, setErrorLName] = useState('');
+  const [userName, setUserName] = useState('');
+  const [errorUserName, setErrorUserName] = useState('');
   const [email, setEmail] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
-  const [validating, setValidating] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const submitByEnterKey = (e: any) => {
     if (e.which === 13) {
       onSubmit(e);
     }
   };
-  const onSubmit = (e: any) => {
+
+  const onSubmit = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-    if (isValidated()) {
+    if (!isValidated()) {
       setIsLoading(false);
-      console.log('no errors');
     }
-    setIsLoading(false);
+
+    console.log('no errors');
+    const data = {
+      firstName,
+      lastName,
+      email,
+      userName,
+      password,
+    };
+    try {
+      const response = await SignupQuery(data);
+      dispatch({
+        type: 'USER',
+        payload: response.data.user,
+      });
+      dispatch({
+        type: 'TOKEN',
+        payload: response.data.token,
+      });
+
+      navigate('/');
+      return;
+    } catch (error) {
+      setIsLoading(false);
+
+      setError('Invalid signup credentials!');
+      setTimeout(() => {
+        setError('');
+      }, 3000);
+      return;
+    }
   };
 
   const isValidated = () => {
     setValidating(true);
-    if (validateEmail()) {
+    if (
+      !(
+        validateFName() &&
+        validateLName() &&
+        validateUserName() &&
+        validateEmail() &&
+        validatePassword()
+      )
+    ) {
       return false;
     }
     return true;
@@ -76,6 +125,20 @@ const Signup = () => {
   useEffect(() => {
     validateLName();
   }, [lastName, validateLName]);
+
+  // username
+  const validateUserName = useCallback(() => {
+    if (!(userName.length < 4)) {
+      setErrorUserName('username must be at least 4 characters');
+      return false;
+    }
+    setErrorUserName('');
+    return true;
+  }, [userName]);
+
+  useEffect(() => {
+    validateUserName();
+  }, [userName, validateUserName]);
 
   // email
   const validateEmail = useCallback(() => {
@@ -116,6 +179,7 @@ const Signup = () => {
     <Layout>
       <FormWrapper>
         <FormTitle>Signup</FormTitle>
+        <ErrorMessage>{error}</ErrorMessage>
         <InputContainer>
           <InputDiv>
             <InputStyled
@@ -144,6 +208,21 @@ const Signup = () => {
             {validating && (
               <MessageStyle error={errorLName}>
                 {errorLName ? errorLName : 'okay'}
+              </MessageStyle>
+            )}
+          </InputDiv>
+          <InputDiv>
+            <InputStyled
+              type="text"
+              placeholder="username"
+              onChange={(e: any) => setUserName(e.target.value)}
+              value={userName}
+              onKeyDown={submitByEnterKey}
+              name="username"
+            />
+            {validating && (
+              <MessageStyle error={errorUserName}>
+                {errorUserName ? errorUserName : 'okay'}
               </MessageStyle>
             )}
           </InputDiv>

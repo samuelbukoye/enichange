@@ -5,6 +5,8 @@ const TokenReducer = (state = INITIAL_STATE, action: ActionTypes) => {
   switch (action.type) {
     case 'TOKEN':
       return action.payload;
+    case 'LOGOUT':
+      return '';
     default:
       return state;
   }
