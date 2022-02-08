@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import validator from 'validator';
+import ButtonWithLoader from '../../Components/ButtonWithLoader/ButtonWithLoader';
 import Layout from '../../Components/Layout/Layout';
 import {
   FFP,
-  FormButton,
   FormFooter,
   FormTitle,
   FormWrapper,
@@ -24,6 +24,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
   const [validating, setValidating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const submitByEnterKey = (e: any) => {
     if (e.which === 13) {
@@ -32,10 +33,14 @@ const Signup = () => {
   };
   const onSubmit = (e: any) => {
     e.preventDefault();
+    setIsLoading(true);
     if (isValidated()) {
+      setIsLoading(false);
       console.log('no errors');
     }
+    setIsLoading(false);
   };
+
   const isValidated = () => {
     setValidating(true);
     if (validateEmail()) {
@@ -173,7 +178,11 @@ const Signup = () => {
             )}
           </InputDiv>
         </InputContainer>
-        <FormButton onClick={(e) => onSubmit(e)}>SUBMIT</FormButton>
+        <ButtonWithLoader
+          name="SIGNUP"
+          isLoading={isLoading}
+          onClick={(e: any) => onSubmit(e)}
+        />
         <FormFooter>
           <FFP>Already have an Account?</FFP>
           <StyledLink to="/login">Login</StyledLink>

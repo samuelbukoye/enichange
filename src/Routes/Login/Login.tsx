@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import validator from 'validator';
+import ButtonWithLoader from '../../Components/ButtonWithLoader/ButtonWithLoader';
 import Layout from '../../Components/Layout/Layout';
+import { MessageStyle } from '../Signup/Signup.styles';
 import {
   FFP,
-  FormButton,
   FormFooter,
   FormTitle,
   FormWrapper,
@@ -15,6 +17,9 @@ import {
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [validating, setValidating] = useState(false);
+  const [errorEmail, setErrorEmail] = useState('');
 
   const submitByEnterKey = (e: any) => {
     if (e.which === 13) {
@@ -23,7 +28,35 @@ const Login = () => {
   };
   const onSubmit = (e: any) => {
     e.preventDefault();
+    setIsLoading(true);
+    if (isValidated()) {
+      setIsLoading(false);
+      console.log('no errors');
+    }
+    setIsLoading(false);
   };
+
+  const isValidated = () => {
+    setValidating(true);
+    if (validateEmail()) {
+      return false;
+    }
+    return true;
+  };
+
+  // email
+  const validateEmail = useCallback(() => {
+    if (!validator.isEmail(email)) {
+      setErrorEmail('Please input a correct email address');
+      return false;
+    }
+    setErrorEmail('');
+    return true;
+  }, [email]);
+
+  useEffect(() => {
+    validateEmail();
+  }, [email, validateEmail]);
 
   return (
     <Layout>
@@ -41,6 +74,11 @@ const Login = () => {
               onKeyDown={submitByEnterKey}
               name="email"
             />
+            {validating && (
+              <MessageStyle error={errorEmail}>
+                {errorEmail ? errorEmail : 'okay'}
+              </MessageStyle>
+            )}
           </InputDiv>
           <InputDiv>
             <InputStyled
@@ -53,7 +91,11 @@ const Login = () => {
             />
           </InputDiv>
         </InputContainer>
-        <FormButton onClick={(e) => onSubmit(e)}>SUBMIT</FormButton>
+        <ButtonWithLoader
+          name="LOGIN"
+          isLoading={isLoading}
+          onClick={(e: any) => onSubmit(e)}
+        />
         <FormFooter>
           <FFP>Don't have an Account?</FFP>
           <StyledLink to="/signup">Signup</StyledLink>

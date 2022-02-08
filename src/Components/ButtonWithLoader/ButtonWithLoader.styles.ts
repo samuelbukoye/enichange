@@ -1,24 +1,17 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  width: 100%;
-`;
-
-export const ButtonTop = styled.div<{ props?: boolean }>`
-  width: 100%;
-  background-color: ${(e) => (e.props ? '#7F7F82' : 'darkblue')};
-  border: none;
+export const FormButton = styled.button`
+  cursor: pointer;
+  background-color: darkblue;
   color: white;
-  padding: 12px 24px;
-  margin-top: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: ${(e) => (e.props ? 'not-allowed' : 'pointer')};
-  text-align: center;
-  @media screen and (max-width: 500px) {
-    padding: 10px 15px;
-    font-size: 14px;
-    width: 100%;
+  width: 100%;
+  margin-top: 25px;
+  padding: 15px;
+  font-size: 1em;
+  border: none;
+  box-shadow: 2px 0px 5px #453a80, 1px 0px 2px #262041;
+  :hover {
+    box-shadow: 1px 0px 2px #262041;
   }
 `;
 

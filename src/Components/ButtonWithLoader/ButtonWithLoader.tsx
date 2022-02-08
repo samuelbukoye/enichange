@@ -1,33 +1,21 @@
-import React from 'react';
-
-import { ButtonTop, Container, Loader } from './ButtonWithLoader.styles';
+import { FormButton, Loader } from './ButtonWithLoader.styles';
 
 interface ButtonWithLoaderProps {
-  title?: string;
+  name?: string;
   isLoading?: boolean;
-  onClick?: any;
-  disable?: boolean;
-  style?: any;
+  onClick: any;
 }
 
-function ButtonWithLoader({
-  title,
-  isLoading,
-  onClick,
-  disable,
-  style,
-}: ButtonWithLoaderProps) {
+function ButtonWithLoader({ name, isLoading, onClick }: ButtonWithLoaderProps) {
   return (
-    <Container style={style}>
-      <ButtonTop onClick={disable ? null : onClick} props={disable}>
-        {isLoading ? (
-          <Loader>
-            <i className="fa fa-spinner fa-spin"></i>
-          </Loader>
-        ) : null}
-        {title || 'Click here'}
-      </ButtonTop>
-    </Container>
+    <FormButton onClick={onClick}>
+      {name || 'CLICK HERE'}
+      {isLoading && (
+        <Loader>
+          <i className="fa fa-spinner fa-spin"></i>
+        </Loader>
+      )}
+    </FormButton>
   );
 }
 

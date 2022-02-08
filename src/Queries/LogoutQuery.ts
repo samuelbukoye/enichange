@@ -1,0 +1,18 @@
+import axios from 'axios';
+import { store } from '../store';
+import { Url } from '../utils';
+
+export const LogoutQuery = async () => {
+  const url = `${Url}/logout`;
+  const token = await store.getState().TokenReducer;
+
+  try {
+    console.log({ url });
+    const data = await axios.post(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
