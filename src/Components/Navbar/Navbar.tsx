@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { TFButton, TFI, TFSpan } from '../../Routes/UserPage/UserPage.styles';
+import { useNavigate } from 'react-router-dom';
+import { TFI, TFSpan } from '../../Routes/UserPage/UserPage.styles';
 import { store } from '../../store';
 import {
   LogoutButton,

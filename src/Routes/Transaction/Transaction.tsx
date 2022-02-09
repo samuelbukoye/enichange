@@ -29,8 +29,7 @@ import {
 } from './Transaction.styles';
 import { GetUsersQuery } from '../../Queries/GetUsersQuery';
 import { CreateTransactionQuery } from '../../Queries/CreateTransactionQuery';
-import { useDispatch } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Transaction = () => {
   const navigate = useNavigate();
