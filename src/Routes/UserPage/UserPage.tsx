@@ -29,8 +29,11 @@ import { useNavigate } from 'react-router-dom';
 
 const UserPage = () => {
   const navigate = useNavigate();
-  const [token] = useState(store.getState().TokenReducer);
-  if (!token) navigate('/login');
+  useEffect(() => {
+    const token = store.getState().TokenReducer;
+    if (!token) navigate('/login');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(store.getState().UserDataReducer);

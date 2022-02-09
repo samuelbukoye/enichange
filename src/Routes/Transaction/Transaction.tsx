@@ -33,10 +33,13 @@ import { useNavigate } from 'react-router-dom';
 
 const Transaction = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = store.getState().TokenReducer;
+    if (!token) navigate('/login');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [userData] = useState(store.getState().UserDataReducer);
-  const [token] = useState(store.getState().TokenReducer);
-  if (!token) navigate('/login');
   const [successMessage, setSuccessMessage] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
