@@ -8,24 +8,24 @@ import { FormTitle, FormWrapper } from '../Login/Login.styles';
 import { MessageStyle } from '../Signup/Signup.styles';
 import { InputStyled as InputStyledLogin } from '../Login/Login.styles';
 import {
-  Balancep,
   BalanceP,
   InputDiv,
   InputLabel,
   InputStyled,
-  ReceivedDiv,
-  ReceiveAmount,
   TCRadioDiv,
   TCRadioSpan,
   TCRadioWrap,
   TCValue,
   TFCTitle,
-  TFCurrency,
-  TFInnerDiv,
   TFormDiv,
-  UserNameDiv,
   UserNamesP,
   FormSuccess,
+  TFCurrencySend,
+  SendAmountDiv,
+  TFCurrencyReceive,
+  ReceiverUserNameDiv,
+  UserNamesDiv,
+  UserNamesPWrap,
 } from './Transaction.styles';
 import { GetUsersQuery } from '../../Queries/GetUsersQuery';
 import { CreateTransactionQuery } from '../../Queries/CreateTransactionQuery';
@@ -35,6 +35,8 @@ const Transaction = () => {
   const navigate = useNavigate();
 
   const [userData] = useState(store.getState().UserDataReducer);
+  const [token] = useState(store.getState().TokenReducer);
+  if (!token) navigate('/login');
   const [successMessage, setSuccessMessage] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +48,7 @@ const Transaction = () => {
   const [sendAmountErr, setSendAmountErr] = useState('');
 
   const [receiverUserName, setReceiverUserName] = useState('');
-  const [enchangeRate, setEnchangeRate] = useState(0);
+  const [exchangeRate, setExchangeRate] = useState(0);
 
   const [inputFocused, setInputFocused] = useState(false);
   const [filteredUserNames, setFilteredUserNames] = useState([]);
@@ -109,7 +111,7 @@ const Transaction = () => {
       const data = { sendAmount, sendCurrency, receiveCurrency };
       const exchangeRateAndAmount = await GetRateAndPriceQuery(data);
 
-      setEnchangeRate(exchangeRateAndAmount.data.exchangeRate);
+      setExchangeRate(exchangeRateAndAmount.data.exchangeRate);
       setReceiveAmount(exchangeRateAndAmount.data.receiveAmount);
     } catch (e) {}
   };
@@ -128,7 +130,7 @@ const Transaction = () => {
     e.preventDefault();
     setIsLoading(true);
     if (
-      !(receiverUserName && sendAmount >= 5 && sendCurrency && receiveCurrency)
+      !(receiverUserName && !sendAmountErr && sendCurrency && receiveCurrency)
     ) {
       console.log(receiverUserName, sendAmount, sendCurrency, receiveCurrency);
       setIsLoading(false);
@@ -160,176 +162,185 @@ const Transaction = () => {
         {successMessage && <FormSuccess>{successMessage}</FormSuccess>}
         <FormTitle>Transaction</FormTitle>
         <TFormDiv>
-          <TFInnerDiv>
-            <TFCurrency>
-              <TFCTitle>Send Currency</TFCTitle>
-              <TCRadioWrap>
-                <TCRadioDiv>
-                  <TCRadioSpan
-                    active={sendCurrency === 'GBP' ? true : false}
-                    onClick={() => {
-                      setSendCurrencyValue('GBP');
-                    }}
-                  ></TCRadioSpan>
-                  <TCValue
-                    onClick={() => {
-                      setSendCurrencyValue('GBP');
-                    }}
-                  >
-                    GBP
-                  </TCValue>
-                </TCRadioDiv>
-                <TCRadioDiv>
-                  <TCRadioSpan
-                    active={sendCurrency === 'USD' ? true : false}
-                    onClick={() => {
-                      setSendCurrencyValue('USD');
-                    }}
-                  ></TCRadioSpan>
-                  <TCValue
-                    onClick={() => {
-                      setSendCurrencyValue('USD');
-                    }}
-                  >
-                    USD
-                  </TCValue>
-                </TCRadioDiv>
-                <TCRadioDiv>
-                  <TCRadioSpan
-                    active={sendCurrency === 'EUR' ? true : false}
-                    onClick={() => {
-                      setSendCurrencyValue('EUR');
-                    }}
-                  ></TCRadioSpan>
-                  <TCValue
-                    onClick={() => {
-                      setSendCurrencyValue('EUR');
-                    }}
-                  >
-                    EUR
-                  </TCValue>
-                </TCRadioDiv>
-              </TCRadioWrap>
-            </TFCurrency>
+          <TFCurrencySend>
+            <TFCTitle>Send Currency</TFCTitle>
+            <TCRadioWrap>
+              <TCRadioDiv>
+                <TCRadioSpan
+                  active={sendCurrency === 'GBP' ? true : false}
+                  onClick={() => {
+                    setSendCurrencyValue('GBP');
+                  }}
+                ></TCRadioSpan>
+                <TCValue
+                  onClick={() => {
+                    setSendCurrencyValue('GBP');
+                  }}
+                >
+                  GBP
+                </TCValue>
+              </TCRadioDiv>
+              <TCRadioDiv>
+                <TCRadioSpan
+                  active={sendCurrency === 'USD' ? true : false}
+                  onClick={() => {
+                    setSendCurrencyValue('USD');
+                  }}
+                ></TCRadioSpan>
+                <TCValue
+                  onClick={() => {
+                    setSendCurrencyValue('USD');
+                  }}
+                >
+                  USD
+                </TCValue>
+              </TCRadioDiv>
+              <TCRadioDiv>
+                <TCRadioSpan
+                  active={sendCurrency === 'EUR' ? true : false}
+                  onClick={() => {
+                    setSendCurrencyValue('EUR');
+                  }}
+                ></TCRadioSpan>
+                <TCValue
+                  onClick={() => {
+                    setSendCurrencyValue('EUR');
+                  }}
+                >
+                  EUR
+                </TCValue>
+              </TCRadioDiv>
+            </TCRadioWrap>
             {sendCurrency && (
-              <>
-                <BalanceP>
-                  Your {sendCurrency} balance is {balance}
-                </BalanceP>
-                <InputDiv>
-                  <InputLabel htmlFor="sendAmount">
-                    <span>Amount</span>
-                  </InputLabel>
-                  <InputStyled
-                    type="number"
-                    name="sendAmount"
-                    placeholder="Email"
-                    onChange={(e: any) => {
-                      setSendAmount(e.target.value);
-                    }}
-                    value={sendAmount}
-                    balance={balance}
-                  />
-                </InputDiv>
-                {sendAmountErr && (
-                  <MessageStyle error={sendAmountErr}>
-                    {sendAmountErr}
-                  </MessageStyle>
-                )}
-              </>
+              <BalanceP>
+                Your {sendCurrency} balance is{' '}
+                {balance ? balance.toFixed(2) : 0}
+              </BalanceP>
             )}
-          </TFInnerDiv>
-          <TFInnerDiv>
-            <TFCurrency>
-              <TFCTitle>Receive Currency</TFCTitle>
-              <TCRadioWrap>
-                <TCRadioDiv>
-                  <TCRadioSpan
-                    active={receiveCurrency === 'GBP' ? true : false}
-                    onClick={() => {
-                      setReceiveCurrencyValue('GBP');
-                    }}
-                  ></TCRadioSpan>
-                  <TCValue
-                    onClick={() => {
-                      setReceiveCurrencyValue('GBP');
-                    }}
-                  >
-                    GBP
-                  </TCValue>
-                </TCRadioDiv>
-                <TCRadioDiv>
-                  <TCRadioSpan
-                    active={receiveCurrency === 'USD' ? true : false}
-                    onClick={() => {
-                      setReceiveCurrencyValue('USD');
-                    }}
-                  ></TCRadioSpan>
-                  <TCValue
-                    onClick={() => {
-                      setReceiveCurrencyValue('USD');
-                    }}
-                  >
-                    USD
-                  </TCValue>
-                </TCRadioDiv>
-                <TCRadioDiv>
-                  <TCRadioSpan
-                    active={receiveCurrency === 'EUR' ? true : false}
-                    onClick={() => {
-                      setReceiveCurrencyValue('EUR');
-                    }}
-                  ></TCRadioSpan>
-                  <TCValue
-                    onClick={() => {
-                      setReceiveCurrencyValue('EUR');
-                    }}
-                  >
-                    EUR
-                  </TCValue>
-                </TCRadioDiv>
-              </TCRadioWrap>
-            </TFCurrency>
-          </TFInnerDiv>
-          {sendCurrency && receiveCurrency && receiverUserName && (
-            <ReceivedDiv>
-              <Balancep>{receiverUserName} will receive</Balancep>
-              <ReceiveAmount>{receiveAmount}</ReceiveAmount>
-              <Balancep>
-                at {enchangeRate} {sendCurrency}/{receiveCurrency}
-              </Balancep>
-            </ReceivedDiv>
+          </TFCurrencySend>
+          {sendCurrency && receiveCurrency && (
+            <SendAmountDiv>
+              <InputLabel htmlFor="sendAmount">Input Send Amount</InputLabel>
+              <InputDiv>
+                <InputStyled
+                  type="number"
+                  name="sendAmount"
+                  placeholder="Email"
+                  onChange={(e: any) => {
+                    setSendAmount(e.target.value);
+                  }}
+                  value={sendAmount}
+                  balance={balance}
+                />
+              </InputDiv>
+              {sendAmountErr && (
+                <MessageStyle error={sendAmountErr}>
+                  {sendAmountErr}
+                </MessageStyle>
+              )}
+              {receiverUserName && (
+                <>
+                  <BalanceP>Receiver: {receiverUserName}</BalanceP>
+                  <BalanceP>
+                    Amount to receive in {receiveCurrency}:{' '}
+                    {receiveAmount.toFixed(2)}
+                  </BalanceP>
+                  <BalanceP>Rate: {exchangeRate}</BalanceP>
+                </>
+              )}
+            </SendAmountDiv>
+          )}
+          <TFCurrencyReceive>
+            <TFCTitle>Receive Currency</TFCTitle>
+            <TCRadioWrap>
+              <TCRadioDiv>
+                <TCRadioSpan
+                  active={receiveCurrency === 'GBP' ? true : false}
+                  onClick={() => {
+                    setReceiveCurrencyValue('GBP');
+                  }}
+                ></TCRadioSpan>
+                <TCValue
+                  onClick={() => {
+                    setReceiveCurrencyValue('GBP');
+                  }}
+                >
+                  GBP
+                </TCValue>
+              </TCRadioDiv>
+              <TCRadioDiv>
+                <TCRadioSpan
+                  active={receiveCurrency === 'USD' ? true : false}
+                  onClick={() => {
+                    setReceiveCurrencyValue('USD');
+                  }}
+                ></TCRadioSpan>
+                <TCValue
+                  onClick={() => {
+                    setReceiveCurrencyValue('USD');
+                  }}
+                >
+                  USD
+                </TCValue>
+              </TCRadioDiv>
+              <TCRadioDiv>
+                <TCRadioSpan
+                  active={receiveCurrency === 'EUR' ? true : false}
+                  onClick={() => {
+                    setReceiveCurrencyValue('EUR');
+                  }}
+                ></TCRadioSpan>
+                <TCValue
+                  onClick={() => {
+                    setReceiveCurrencyValue('EUR');
+                  }}
+                >
+                  EUR
+                </TCValue>
+              </TCRadioDiv>
+            </TCRadioWrap>
+          </TFCurrencyReceive>
+          {sendCurrency && receiveCurrency && (
+            <ReceiverUserNameDiv>
+              <InputLabel htmlFor="UserName">
+                {receiverUserName ? 'Change' : ''} Receiver
+              </InputLabel>
+              <InputDiv>
+                <InputStyledLogin
+                  type="text"
+                  placeholder="Input Username"
+                  onChange={(e: any) => {
+                    setUserNamesSearchText(e.target.value);
+                  }}
+                  onFocus={() => setInputFocused(true)}
+                  onBlur={() =>
+                    setTimeout(() => {
+                      setInputFocused(false);
+                    }, 200)
+                  }
+                  value={userNamesSearchText}
+                  name="UserName"
+                />
+                {filteredUserNames && inputFocused && (
+                  <UserNamesDiv>
+                    <UserNamesPWrap>
+                      {filteredUserNames.map((username) => (
+                        <UserNamesP
+                          onClick={() =>
+                            setReceiverUserName(username['userName'])
+                          }
+                          key={username['_id']}
+                        >
+                          {username['userName']}
+                        </UserNamesP>
+                      ))}
+                    </UserNamesPWrap>
+                  </UserNamesDiv>
+                )}
+              </InputDiv>
+            </ReceiverUserNameDiv>
           )}
         </TFormDiv>
-        <InputDiv>
-          <InputStyledLogin
-            type="text"
-            placeholder="input Username"
-            onChange={(e: any) => {
-              setUserNamesSearchText(e.target.value);
-            }}
-            onFocus={() => setInputFocused(true)}
-            onBlur={() =>
-              setTimeout(() => {
-                setInputFocused(false);
-              }, 200)
-            }
-            value={userNamesSearchText}
-            name="UserName"
-          />
-          {filteredUserNames && inputFocused && (
-            <UserNameDiv>
-              {filteredUserNames.map((username) => (
-                <UserNamesP
-                  onClick={() => setReceiverUserName(username['userName'])}
-                  key={username['_id']}
-                >
-                  {username['userName']}
-                </UserNamesP>
-              ))}
-            </UserNameDiv>
-          )}
-        </InputDiv>
         <ButtonWithLoader
           name="SEND"
           isLoading={isLoading}

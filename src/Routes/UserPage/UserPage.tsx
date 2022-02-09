@@ -108,15 +108,15 @@ const UserPage = () => {
           <AccountInfoWrap>
             <AccountInfoCard>
               <Currency>Pounds</Currency>
-              <Balance>&#8358;{userData.GBP}</Balance>
+              <Balance>&#8358;{userData.GBP.toFixed(2)}</Balance>
             </AccountInfoCard>
             <AccountInfoCard>
               <Currency>USDollars</Currency>
-              <Balance>&#36;{userData.USD}</Balance>
+              <Balance>&#36;{userData.USD.toFixed(2)}</Balance>
             </AccountInfoCard>
             <AccountInfoCard>
               <Currency>Euros</Currency>
-              <Balance>&euro;{userData.EUR}</Balance>
+              <Balance>&euro;{userData.EUR.toFixed(2)}</Balance>
             </AccountInfoCard>
           </AccountInfoWrap>
         </UserInfo>

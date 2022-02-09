@@ -10,6 +10,20 @@ export const FormWrapper = styled.form`
   :hover {
     box-shadow: 2px 1px 5px #262041;
   }
+
+  @media (max-width: 700px) {
+    box-shadow: none;
+    padding: 1em;
+    :hover {
+      box-shadow: none;
+    }
+  }
+  @media (max-width: 575px) {
+    padding: 3em;
+  }
+  @media (max-width: 400px) {
+    padding: 1em;
+  }
 `;
 
 export const FormTitle = styled.h2`
@@ -18,6 +32,9 @@ export const FormTitle = styled.h2`
   color: darkblue;
   letter-spacing: 1px;
   text-align: center;
+  @media (max-width: 400px) {
+    font-size: 1.5em;
+  }
 `;
 
 export const ErrorMessage = styled.h4`

@@ -8,18 +8,45 @@ export const FormSuccess = styled.h2`
   text-align: center;
 `;
 
+export const TFCTitle = styled.h4`
+  font-size: 1.1em;
+  color: darkblue;
+`;
+export const TFInnerDiv = styled.div``;
+
 export const TFormDiv = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1em;
+  grid-template-areas:
+    'TFCurrencySend TFCurrencyReceive'
+    'SendAmountDiv ReceiverUserNameDiv';
+
+  @media (max-width: 575px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'TFCurrencySend' 'TFCurrencyReceive'
+      'SendAmountDiv' 'ReceiverUserNameDiv';
+  }
 `;
 
-export const TFInnerDiv = styled.div``;
+export const TFCurrencySend = styled.div`
+  grid-area: TFCurrencySend;
+`;
 
-export const TFCurrency = styled.div``;
-export const TFCTitle = styled.h4``;
+export const TFCurrencyReceive = styled.div`
+  grid-area: TFCurrencyReceive;
+`;
+
+export const SendAmountDiv = styled.div`
+  grid-area: SendAmountDiv;
+`;
+
+export const ReceiverUserNameDiv = styled.div`
+  grid-area: ReceiverUserNameDiv;
+`;
+
 export const TCRadioWrap = styled.div``;
-
 export const TCRadioDiv = styled.div`
   display: flex;
   align-items: center;
@@ -41,22 +68,17 @@ export const TCValue = styled.span`
 `;
 
 export const BalanceP = styled.p`
-  font-size: 12px;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: grey;
 `;
 export const InputDiv = styled.div`
-  margin: 10px 0;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
+  margin: 20px 0 10px;
 `;
 export const InputLabel = styled.label`
   font-size: 1.1em;
   font-weight: bold;
-  padding: 10px;
-  color: grey;
-  background-color: lightblue;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: darkblue;
 `;
 export const InputStyled = styled.input<{ value: number; balance: number }>`
   width: 100%;
@@ -64,8 +86,6 @@ export const InputStyled = styled.input<{ value: number; balance: number }>`
   font-size: 1.1em;
   background-color: #dddfe7;
   color: #0d1022;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   border-color: ${(p) =>
     p.value > p.balance || p.value < 5 ? 'pink' : 'green'};
 
@@ -78,10 +98,6 @@ export const InputStyled = styled.input<{ value: number; balance: number }>`
   }
 `;
 
-export const ReceivedDiv = styled.div`
-  margin-top: 20px;
-`;
-
 export const Balancep = styled.p`
   margin-top: 0px;
   margin-bottom: 3px;
@@ -90,15 +106,37 @@ export const ReceiveAmount = styled.h3`
   margin-top: 0px;
   margin-bottom: 3px;
 `;
-export const UserNameDiv = styled.div`
-  margin-top: 5px;
-  margin-bottom: 3px;
+export const UserNamesDiv = styled.div`
+  width: 100%;
+  max-height: 190px;
+  position: relative;
+  margin-top: 1px;
+  border: 2px solid lightblue;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow-y: scroll;
+`;
+export const UserNamesPWrap = styled.div`
+  width: 100%;
   display: grid;
-  grid-template-columns: 200px;
-  grid-auto-rows: 100px;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 40px;
+  margin-top: 1px;
+  border: 2px solid lightblue;
+  border-bottom-left-radius: 10px;
 `;
 export const UserNamesP = styled.p`
+  z-index: 2;
+  width: 100%;
+  margin: 0;
+  border-top: 2px solid lightblue;
   padding: 5px;
   text-align: center;
-  background: lightblue;
+  font-size: 0.9em;
+  font-weight: bold;
+  color: grey;
+  :hover {
+    font-size: 1em;
+    background-color: lightblue;
+  }
 `;
