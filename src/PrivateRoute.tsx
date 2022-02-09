@@ -1,11 +1,10 @@
-import Login from './Routes/Login/Login';
+import { Navigate } from 'react-router-dom';
 import { store } from './store';
 
-const PrivateRoute = (props: any) => {
-  const loggedIn = store.getState().TokenReducer;
+function PrivateRoute(props: any) {
+  const loggedIn = store.getState().TokenReducer ? true : false;
 
-  if (loggedIn) <Login />;
+  return loggedIn ? props.children : <Navigate to="/login" replace />;
+}
 
-  return props.children;
-};
 export default PrivateRoute;
