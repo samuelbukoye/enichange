@@ -3,7 +3,10 @@ import styled from 'styled-components';
 
 export const UserPageWrapper = styled.main`
   padding: 0 2em 2em;
-  /* box-shadow: 4px 4px 10px #453a80, 2px 2px 5px #262041; */
+  width: 100%;
+  @media (max-width: 500px) {
+    padding: 0 0.5em 0.5em;
+  }
 `;
 
 // Header
@@ -18,36 +21,96 @@ export const UserInfo = styled.section`
   /* color: #ffffff; */
   color:black
   padding: 2em;
-`;
+  `;
 
 export const Welcome = styled.h3`
   font-size: 1.5em;
+  color: darkblue;
+  @media (max-width: 500px) {
+    font-size: 1.1em;
+  }
+  @media (max-width: 350px) {
+    text-align: center;
+  }
 `;
 
-export const BalanceText = styled.p`
+export const BalanceText = styled.h2`
   margin-top: 1.5em;
   text-align: center;
+  font-size: 1.5em;
+  color: darkblue;
+
+  @media (max-width: 500px) {
+    font-size: 1.1em;
+  }
 `;
 
 export const AccountInfoWrap = styled.div`
-  margin: 1em auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1em;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  @media (max-width: 650px) {
+  }
 `;
 
 export const AccountInfoCard = styled.div`
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: #06063d;
   color: #ffffff;
-  padding: 1em 3em;
+  /* padding: 1em 3em; */
+  margin: 1em;
+  width: 250px;
+  height: 180px;
   border-radius: 10px;
+
+  @media (max-width: 650px) {
+    margin: 0.5em;
+    width: 150px;
+    height: 120px;
+  }
+  @media (max-width: 500px) {
+    margin: 0.2em;
+    width: 100px;
+    height: 80px;
+  }
+  @media (max-width: 250px) {
+    margin: 0.1em;
+    width: 80px;
+    height: 70px;
+  }
 `;
 
-export const Currency = styled.h5``;
+export const Currency = styled.h5`
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  @media (max-width: 650px) {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 500px) {
+    font-size: 0.8em;
+    margin-bottom: 5px;
+  }
+  @media (max-width: 250px) {
+    font-size: 0.5em;
+  }
+`;
 
 export const Balance = styled.p`
   font-size: 1.5em;
+  margin-top: 0px;
+  @media (max-width: 650px) {
+    font-size: 1.1em;
+  }
+  @media (max-width: 500px) {
+    font-size: 0.8em;
+  }
+  @media (max-width: 250px) {
+    font-size: 0.5em;
+  }
 `;
 
 // transactions header
@@ -57,10 +120,21 @@ export const UPHHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   padding-bottom: 2em;
+  @media (max-width: 350px) {
+    display: block;
+  }
 `;
 
 export const UPH1 = styled.h2`
-  font-size: 28px;
+  font-size: 1.5em;
+  color: darkblue;
+
+  @media (max-width: 500px) {
+    font-size: 1.1em;
+  }
+  @media (max-width: 350px) {
+    text-align: center;
+  }
 `;
 
 export const UPHButton = styled.button`
@@ -78,6 +152,12 @@ export const UPHButton = styled.button`
   :hover {
     box-shadow: 0.5px 0px 1px #262041;
   }
+  @media (max-width: 500px) {
+    font-size: 10px;
+  }
+  @media (max-width: 350px) {
+    margin-left: auto;
+  }
 `;
 
 export const UPHNavLink = styled(NavLink)`
@@ -93,17 +173,25 @@ export const UPHNavLink = styled(NavLink)`
 export const Transactions = styled.section`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  font-size: 12px;
+  grid-gap: 0.5em;
+  font-size: 1em;
+  @media (max-width: 650px) {
+    font-size: 0.8em;
+  }
+  @media (max-width: 500px) {
+    font-size: 0.7em;
+  }
+  @media (max-width: 350px) {
+    font-size: 0.5em;
+  }
 `;
 
 export const TransactionsCol = styled.h4`
   border-top: 1px solid #e2e0e0;
-  padding: 1em;
 `;
 
 export const TransactionsCell = styled.p<{ credit?: boolean }>`
   border-top: 1px solid #e2e0e0;
-  padding: 1em;
 
   color: ${(p) =>
     p.credit === true ? 'green' : p.credit === false ? 'red' : 'inherit'};
@@ -116,6 +204,9 @@ export const TransactionsFooter = styled.footer`
   justify-content: space-between;
   align-items: center;
   height: min-content;
+  @media (max-width: 350px) {
+    display: block;
+  }
 `;
 export const TFButton = styled.button`
   display: flex;
@@ -133,6 +224,12 @@ export const TFButton = styled.button`
 
   :hover {
     box-shadow: 0.5px 0px 1px #262041;
+  }
+  @media (max-width: 500px) {
+    font-size: 10px;
+  }
+  @media (max-width: 350px) {
+    margin-left: auto;
   }
 `;
 

@@ -138,8 +138,8 @@ const UserPage = () => {
         </UPHHeader>
 
         {/* Transactions Section */}
+        {/* Transactions Head */}
         <Transactions>
-          {/* Transactions Head */}
           <TransactionsCol>ID</TransactionsCol>
           <TransactionsCol>From</TransactionsCol>
           <TransactionsCol>To</TransactionsCol>
@@ -161,8 +161,8 @@ const UserPage = () => {
               </TransactionsCell>
               <TransactionsCell credit={transaction.credit}>
                 {transaction.credit
-                  ? `+${transaction.receiveAmount}`
-                  : `+${transaction.sendAmount}`}
+                  ? `+${transaction.receiveAmount.toFixed(2)}`
+                  : `+${transaction.sendAmount.toFixed(2)}`}
               </TransactionsCell>
               <TransactionsCell>
                 {transaction.credit
