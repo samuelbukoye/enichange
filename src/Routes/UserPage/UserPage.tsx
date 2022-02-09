@@ -25,15 +25,8 @@ import {
 import { GetTransactionsQuery } from '../../Queries/GetTransactionsQuery';
 import { useDispatch } from 'react-redux';
 import { GetUserInfoQuery } from '../../Queries/GetUserInfoQuery';
-import { useNavigate } from 'react-router-dom';
 
 const UserPage = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const token = store.getState().TokenReducer;
-    if (!token) navigate('/login');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(store.getState().UserDataReducer);
