@@ -15,7 +15,6 @@ export const CreateTransactionQuery = async (props: PropsArgs) => {
   const token = await store.getState().TokenReducer;
 
   try {
-    console.log({ url, props });
     const data = await axios.post(
       url,
       {

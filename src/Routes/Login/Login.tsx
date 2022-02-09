@@ -45,7 +45,6 @@ const Login = () => {
       return;
     }
 
-    console.log('no errors');
     const data = validator.isEmail(emailOrUserName)
       ? { email: emailOrUserName, password }
       : { userName: emailOrUserName, password };

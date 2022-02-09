@@ -7,7 +7,6 @@ export const LogoutAllQuery = async () => {
   const token = await store.getState().TokenReducer;
 
   try {
-    console.log({ url });
     const data = await axios.post(url, {
       headers: { Authorization: `Bearer ${token}` },
     });

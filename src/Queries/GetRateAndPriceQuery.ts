@@ -14,7 +14,6 @@ export const GetRateAndPriceQuery = async (props: PropsArgs) => {
   const token = await store.getState().TokenReducer;
 
   try {
-    console.log({ url, props, token });
     const data = await axios.post(
       url,
       {

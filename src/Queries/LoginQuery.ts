@@ -19,7 +19,6 @@ export const LoginQuery = async (props: PropsArgs) => {
   const url = `${Url}/login`;
 
   try {
-    console.log({ url, props });
     const data = await axios.post(url, {
       userName,
       email,

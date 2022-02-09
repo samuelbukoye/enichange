@@ -7,7 +7,6 @@ export const GetUserInfoQuery = async () => {
   const token = await store.getState().TokenReducer;
 
   try {
-    console.log({ url });
     const data = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });

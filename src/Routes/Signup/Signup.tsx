@@ -51,7 +51,6 @@ const Signup = () => {
       return;
     }
 
-    console.log('no errors');
     const data = {
       firstName,
       lastName,
@@ -74,7 +73,6 @@ const Signup = () => {
       return;
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
       setError('Invalid signup credentials!');
       setTimeout(() => {
         setError('');

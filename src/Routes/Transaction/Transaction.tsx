@@ -132,7 +132,6 @@ const Transaction = () => {
     if (
       !(receiverUserName && !sendAmountErr && sendCurrency && receiveCurrency)
     ) {
-      console.log(receiverUserName, sendAmount, sendCurrency, receiveCurrency);
       setIsLoading(false);
       return;
     }

@@ -85,7 +85,6 @@ const UserPage = () => {
     return `${month} ${day}, ${year} ${hour}:${minute}`;
   };
 
-  console.log(userTransactions);
   const getUserName = (userName: string) =>
     userName === userData.userName ? 'You' : userName;
   return (
