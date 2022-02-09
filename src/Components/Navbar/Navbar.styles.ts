@@ -12,16 +12,24 @@ export const Nav = styled.nav`
     /* flex-direction: column; */
     padding: 0px 10px;
   }
+  @media screen and (max-width: 500px) {
+    background: purple;
+  }
 `;
 export const NavH2 = styled.h2`
   font-size: 32px;
-  width: 200px;
+  width: max-content;
+  padding-right: 5px;
+  color: green;
   @media screen and (max-width: 996px) {
     font-size: 20px;
   }
   @media screen and (max-width: 600px) {
     align-self: flex-start;
     font-size: 20px;
+  }
+  @media screen and (max-width: 500px) {
+    color: white;
   }
 `;
 export const NavDiv = styled.div`
@@ -30,54 +38,51 @@ export const NavDiv = styled.div`
   grid-gap: 1em;
   justify-items: center;
   align-items: center;
+  grid-auto-rows: 30px;
 
   @media screen and (max-width: 996px) {
-    height: 40px;
   }
   @media screen and (max-width: 600px) {
-    height: 40px;
+    grid-gap: 0.7em;
   }
 
-  @media screen and (max-width: 400px) {
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 20px;
-    align-items: center;
-    justify-items: start;
-    height: auto;
+  @media screen and (max-width: 500px) {
+    display: none;
   }
 `;
-export const NavDivP = styled.p<{ active?: boolean }>`
-  font-size: 18px;
-  color: ${(p) => (p.active ? 'rgb(165, 175, 185)' : ' rgb(49, 107, 170)')};
-
-  :hover {
-    font-size: ${(p) => (p.active ? '18' : '18.5')};
-    color: ${(p) => (p.active ? 'rgb(165, 175, 185)' : 'rgb(18, 79, 145)')};
-  }
-  @media screen and (max-width: 996px) {
-    font-size: 14px;
-    :hover {
-      font-size: ${(p) => (p.active ? '14' : '14.5')};
-    }
-  }
-  @media screen and (max-width: 600px) {
-    font-size: 12px;
-    :hover {
-      font-size: ${(p) => (p.active ? '12' : '12.5')};
-    }
-  }
-`;
+export const NavDivP = styled.p``;
 export const NavDivPA = styled(NavLink)`
   text-decoration: none;
+  padding: 5px;
+  font-size: 18px;
+  color: rgb(49, 107, 170);
+
+  :hover {
+    font-size: 18.5;
+    color: rgb(18, 79, 145);
+  }
+  @media screen and (max-width: 996px) {
+    font-size: 16px;
+    :hover {
+      font-size: 16.5;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    font-size: 14px;
+    :hover {
+      font-size: 14.5;
+    }
+  }
 `;
 
 export const LogoutButton = styled.button`
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
   font-size: 12px;
   text-transform: uppercase;
-  padding: 0.2em 1em;
+  padding: 0.5em 1em;
   margin-left: 5px;
   height: min-content;
   color: darkblue;
@@ -88,5 +93,71 @@ export const LogoutButton = styled.button`
 
   :hover {
     box-shadow: 0.5px 0px 1px #262041;
+  }
+`;
+export const NavButton = styled.div`
+  @media (min-width: 500px) {
+    display: none;
+  }
+  display: block;
+  width: 40px;
+  margin-right: 10px;
+
+  div {
+    height: 5px !important;
+    background: white;
+    margin: 5px 0px;
+    border-radius: 25px;
+  }
+  :hover {
+    div {
+      height: 6px !important;
+    }
+  }
+`;
+export const NavDivMin = styled.div`
+  background: #9e079e;
+  @media (min-width: 500px) {
+    display: none;
+  }
+  width: 50%;
+  position: absolute;
+  z-index: 1000;
+  right: 0;
+  top: 55px;
+`;
+
+export const NavDivInnerMin = styled.div``;
+export const NavDivPMin = styled.p`
+  border-top: 1px solid #c048c0;
+  margin: 0;
+`;
+export const NavDivPAMin = styled(NavLink)`
+  text-decoration: none;
+  display: block;
+  font-size: 15px;
+  font-weight: bold;
+  color: whitesmoke;
+  padding: 13px 10px;
+  :hover {
+    font-size: 16px;
+  }
+`;
+
+export const LogoutButtonMin = styled.button`
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  font-weight: bold;
+  width: 100%;
+  height: 40px;
+  color: #f02828;
+  border: none;
+  background-color: pink;
+
+  :hover {
+    font-size: 16px;
   }
 `;

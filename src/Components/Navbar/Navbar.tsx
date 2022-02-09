@@ -5,21 +5,24 @@ import { TFI, TFSpan } from '../../Routes/UserPage/UserPage.styles';
 import { store } from '../../store';
 import {
   LogoutButton,
+  LogoutButtonMin,
   Nav,
+  NavButton,
   NavDiv,
+  NavDivInnerMin,
+  NavDivMin,
   NavDivP,
   NavDivPA,
+  NavDivPAMin,
+  NavDivPMin,
   NavH2,
 } from './Navbar.styles';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showNav, setShowNav] = useState(false);
   const [isLoggedIn] = useState(store.getState().TokenReducer);
-
-  const checkActive = (fd: any) => {
-    return true;
-  };
 
   const onLogout = () => {
     dispatch({
@@ -33,10 +36,10 @@ const Navbar = () => {
       <NavH2>SimbaProject</NavH2>
       {isLoggedIn ? (
         <NavDiv>
-          <NavDivP active={checkActive('/')}>
+          <NavDivP>
             <NavDivPA to="/">Home</NavDivPA>
           </NavDivP>
-          <NavDivP active={checkActive('/transaction')}>
+          <NavDivP>
             <NavDivPA to="/transaction">New Transaction</NavDivPA>
           </NavDivP>
           <LogoutButton onClick={onLogout}>
@@ -46,14 +49,46 @@ const Navbar = () => {
         </NavDiv>
       ) : (
         <NavDiv>
-          <NavDivP active={checkActive('/')}>
+          <NavDivP>
             <NavDivPA to="/login">Login</NavDivPA>
           </NavDivP>
-          <NavDivP active={checkActive('/transaction')}>
+          <NavDivP>
             <NavDivPA to="/signup">Signup</NavDivPA>
           </NavDivP>
         </NavDiv>
       )}
+      <NavButton onClick={() => setShowNav(!showNav)}>
+        <div></div>
+        <div></div>
+        <div></div>
+      </NavButton>
+      <NavDivMin>
+        {isLoggedIn
+          ? showNav && (
+              <NavDivInnerMin>
+                <NavDivPMin>
+                  <NavDivPAMin to="/">Home</NavDivPAMin>
+                </NavDivPMin>
+                <NavDivPMin>
+                  <NavDivPAMin to="/transaction">New Transaction</NavDivPAMin>
+                </NavDivPMin>
+                <LogoutButtonMin onClick={onLogout}>
+                  <TFSpan>Logout</TFSpan>
+                  <TFI className={`fa fa-sign-out`} aria-hidden="true"></TFI>
+                </LogoutButtonMin>
+              </NavDivInnerMin>
+            )
+          : showNav && (
+              <NavDivInnerMin>
+                <NavDivPMin>
+                  <NavDivPAMin to="/login">Login</NavDivPAMin>
+                </NavDivPMin>
+                <NavDivPMin>
+                  <NavDivPAMin to="/signup">Signup</NavDivPAMin>
+                </NavDivPMin>
+              </NavDivInnerMin>
+            )}
+      </NavDivMin>
     </Nav>
   );
 };

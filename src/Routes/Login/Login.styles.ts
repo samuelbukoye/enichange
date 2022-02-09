@@ -19,7 +19,7 @@ export const FormWrapper = styled.form`
     }
   }
   @media (max-width: 575px) {
-    padding: 3em;
+    padding: 3em;f
   }
   @media (max-width: 400px) {
     padding: 1em;
