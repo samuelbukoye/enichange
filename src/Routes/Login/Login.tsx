@@ -42,6 +42,7 @@ const Login = () => {
     setIsLoading(true);
     if (!isValidated()) {
       setIsLoading(false);
+      return;
     }
 
     console.log('no errors');
@@ -82,7 +83,7 @@ const Login = () => {
 
   // email or username
   const validateEmailOrUserName = useCallback(() => {
-    if (emailOrUserName) {
+    if (!emailOrUserName) {
       setErrorEmailOrUserName('input email or username');
       return false;
     }

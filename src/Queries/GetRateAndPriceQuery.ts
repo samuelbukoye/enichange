@@ -2,15 +2,15 @@ import axios from 'axios';
 import { store } from '../store';
 import { Url } from '../utils';
 
-type PropsArgs = {
+interface PropsArgs {
   sendAmount: number;
-  sendCurrency: 'USD' | 'GBP' | 'EUR';
-  receiveCurrency: 'USD' | 'GBP' | 'EUR';
-};
+  sendCurrency: string;
+  receiveCurrency: string;
+}
 
 export const GetRateAndPriceQuery = async (props: PropsArgs) => {
   const { sendAmount, sendCurrency, receiveCurrency } = props;
-  const url = `${Url}/login`;
+  const url = `${Url}/getRateAndPrice`;
   const token = await store.getState().TokenReducer;
 
   try {

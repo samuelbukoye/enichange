@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+export const FormSuccess = styled.h2`
+  text-transform: uppercase;
+  font-size: 2em;
+  color: lightgreen;
+  letter-spacing: 1px;
+  text-align: center;
+`;
+
 export const TFormDiv = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -59,7 +67,7 @@ export const InputStyled = styled.input<{ value: number; balance: number }>`
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   border-color: ${(p) =>
-    p.value > p.balance || p.value < 1 ? 'pink' : 'green'};
+    p.value > p.balance || p.value < 5 ? 'pink' : 'green'};
 
   :hover {
     background-color: #d4d7e9;
@@ -78,7 +86,19 @@ export const Balancep = styled.p`
   margin-top: 0px;
   margin-bottom: 3px;
 `;
-export const ReceivedValue = styled.h3`
+export const ReceiveAmount = styled.h3`
   margin-top: 0px;
   margin-bottom: 3px;
+`;
+export const UserNameDiv = styled.div`
+  margin-top: 5px;
+  margin-bottom: 3px;
+  display: grid;
+  grid-template-columns: 200px;
+  grid-auto-rows: 100px;
+`;
+export const UserNamesP = styled.p`
+  padding: 5px;
+  text-align: center;
+  background: lightblue;
 `;

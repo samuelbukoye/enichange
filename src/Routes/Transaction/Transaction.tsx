@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import ButtonWithLoader from '../../Components/ButtonWithLoader/ButtonWithLoader';
 import Layout from '../../Components/Layout/Layout';
+
+import { GetRateAndPriceQuery } from '../../Queries/GetRateAndPriceQuery';
+import { store } from '../../store';
 import { FormTitle, FormWrapper } from '../Login/Login.styles';
 import { MessageStyle } from '../Signup/Signup.styles';
+import { InputStyled as InputStyledLogin } from '../Login/Login.styles';
 import {
   Balancep,
   BalanceP,
@@ -10,7 +14,7 @@ import {
   InputLabel,
   InputStyled,
   ReceivedDiv,
-  ReceivedValue,
+  ReceiveAmount,
   TCRadioDiv,
   TCRadioSpan,
   TCRadioWrap,
@@ -19,22 +23,59 @@ import {
   TFCurrency,
   TFInnerDiv,
   TFormDiv,
+  UserNameDiv,
+  UserNamesP,
+  FormSuccess,
 } from './Transaction.styles';
+import { GetUsersQuery } from '../../Queries/GetUsersQuery';
+import { CreateTransactionQuery } from '../../Queries/CreateTransactionQuery';
+import { useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Transaction = () => {
-  const onSubmit = (e: any) => {
-    e.preventDefault();
-  };
+  const navigate = useNavigate();
+
+  const [userData] = useState(store.getState().UserDataReducer);
+  const [successMessage, setSuccessMessage] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState(2345.0);
   const [sendCurrency, setSendCurrency] = useState('');
   const [receiveCurrency, setReceiveCurrency] = useState('');
-  const [sendValue, setSendValue] = useState(10);
-  const [receivedValue, setReceivedValue] = useState(10);
-  const [sendValueErr, setSendValueErr] = useState('gfdsd');
+  const [sendAmount, setSendAmount] = useState(5);
+  const [receiveAmount, setReceiveAmount] = useState(0);
+  const [sendAmountErr, setSendAmountErr] = useState('');
 
-  const [receiver, setReceiver] = useState('Bukoye samuel');
-  const [enchangeRate, setEnchangeRate] = useState(0.456);
+  const [receiverUserName, setReceiverUserName] = useState('');
+  const [enchangeRate, setEnchangeRate] = useState(0);
+
+  const [inputFocused, setInputFocused] = useState(false);
+  const [filteredUserNames, setFilteredUserNames] = useState([]);
+  const [userNames, setUserNames] = useState([]);
+  const [userNamesSearchText, setUserNamesSearchText] = useState('');
+
+  const getUsersInfo = async () => {
+    const response = await GetUsersQuery();
+    const data = await response.data;
+    const users = await data.users;
+    setUserNames(users);
+  };
+
+  useEffect(() => {
+    getUsersInfo();
+  }, []);
+
+  const filterUsers = () => {
+    const filtered = userNames.filter((user: any) =>
+      user.userName.includes(userNamesSearchText)
+    );
+    setFilteredUserNames(filtered);
+  };
+
+  useEffect(() => {
+    filterUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userNames, userNamesSearchText]);
 
   const setSendCurrencyValue = (curr: string) => {
     sendCurrency === curr ? setSendCurrency('') : setSendCurrency(curr);
@@ -46,23 +87,78 @@ const Transaction = () => {
   };
 
   const handleValueChange = useCallback(() => {
-    if (sendValue < 1) {
-      setSendValueErr('Must be a positive value');
+    if (sendAmount < 5) {
+      setSendAmountErr('You can only send a minimum of 5 ' + sendCurrency);
       return;
-    } else if (sendValue > balance) {
-      setSendValueErr('Value to send is more than balance at' + balance);
+    } else if (sendAmount > balance) {
+      setSendAmountErr('Value to send is more than balance at ' + balance);
       return;
     }
-    setSendValueErr('');
-  }, [sendValue, balance]);
+    setSendAmountErr('');
+  }, [sendAmount, balance, sendCurrency]);
 
   useEffect(() => {
     handleValueChange();
-  }, [sendValue, handleValueChange]);
+  }, [sendAmount, handleValueChange]);
+
+  const getExchangeRateAndAmount = async (
+    sendAmount: number,
+    sendCurrency: string,
+    receiveCurrency: string
+  ) => {
+    try {
+      const data = { sendAmount, sendCurrency, receiveCurrency };
+      const exchangeRateAndAmount = await GetRateAndPriceQuery(data);
+
+      setEnchangeRate(exchangeRateAndAmount.data.exchangeRate);
+      setReceiveAmount(exchangeRateAndAmount.data.receiveAmount);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    if (sendCurrency && receiveCurrency && sendAmount) {
+      getExchangeRateAndAmount(sendAmount, sendCurrency, receiveCurrency);
+    }
+  }, [sendCurrency, receiveCurrency, sendAmount]);
+
+  useEffect(() => {
+    setBalance(userData[sendCurrency]);
+  }, [sendCurrency, userData]);
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+    setIsLoading(true);
+    if (
+      !(receiverUserName && sendAmount >= 5 && sendCurrency && receiveCurrency)
+    ) {
+      console.log(receiverUserName, sendAmount, sendCurrency, receiveCurrency);
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const data = {
+        receiverUserName,
+        sendAmount,
+        sendCurrency,
+        receiveCurrency,
+      };
+
+      await CreateTransactionQuery(data);
+      setIsLoading(false);
+      setSuccessMessage('SENT');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Layout>
       <FormWrapper>
+        {successMessage && <FormSuccess>{successMessage}</FormSuccess>}
         <FormTitle>Transaction</FormTitle>
         <TFormDiv>
           <TFInnerDiv>
@@ -71,29 +167,29 @@ const Transaction = () => {
               <TCRadioWrap>
                 <TCRadioDiv>
                   <TCRadioSpan
-                    active={sendCurrency === 'ngn' ? true : false}
+                    active={sendCurrency === 'GBP' ? true : false}
                     onClick={() => {
-                      setSendCurrencyValue('ngn');
+                      setSendCurrencyValue('GBP');
                     }}
                   ></TCRadioSpan>
                   <TCValue
                     onClick={() => {
-                      setSendCurrencyValue('ngn');
+                      setSendCurrencyValue('GBP');
                     }}
                   >
-                    NGN
+                    GBP
                   </TCValue>
                 </TCRadioDiv>
                 <TCRadioDiv>
                   <TCRadioSpan
-                    active={sendCurrency === 'usd' ? true : false}
+                    active={sendCurrency === 'USD' ? true : false}
                     onClick={() => {
-                      setSendCurrencyValue('usd');
+                      setSendCurrencyValue('USD');
                     }}
                   ></TCRadioSpan>
                   <TCValue
                     onClick={() => {
-                      setSendCurrencyValue('usd');
+                      setSendCurrencyValue('USD');
                     }}
                   >
                     USD
@@ -101,14 +197,14 @@ const Transaction = () => {
                 </TCRadioDiv>
                 <TCRadioDiv>
                   <TCRadioSpan
-                    active={sendCurrency === 'eur' ? true : false}
+                    active={sendCurrency === 'EUR' ? true : false}
                     onClick={() => {
-                      setSendCurrencyValue('eur');
+                      setSendCurrencyValue('EUR');
                     }}
                   ></TCRadioSpan>
                   <TCValue
                     onClick={() => {
-                      setSendCurrencyValue('eur');
+                      setSendCurrencyValue('EUR');
                     }}
                   >
                     EUR
@@ -122,23 +218,23 @@ const Transaction = () => {
                   Your {sendCurrency} balance is {balance}
                 </BalanceP>
                 <InputDiv>
-                  <InputLabel htmlFor="sendValue">
+                  <InputLabel htmlFor="sendAmount">
                     <span>Amount</span>
                   </InputLabel>
                   <InputStyled
                     type="number"
-                    name="sendValue"
+                    name="sendAmount"
                     placeholder="Email"
                     onChange={(e: any) => {
-                      setSendValue(e.target.value);
+                      setSendAmount(e.target.value);
                     }}
-                    value={sendValue}
+                    value={sendAmount}
                     balance={balance}
                   />
                 </InputDiv>
-                {sendValueErr && (
-                  <MessageStyle error={sendValueErr}>
-                    {sendValueErr}
+                {sendAmountErr && (
+                  <MessageStyle error={sendAmountErr}>
+                    {sendAmountErr}
                   </MessageStyle>
                 )}
               </>
@@ -150,29 +246,29 @@ const Transaction = () => {
               <TCRadioWrap>
                 <TCRadioDiv>
                   <TCRadioSpan
-                    active={receiveCurrency === 'ngn' ? true : false}
+                    active={receiveCurrency === 'GBP' ? true : false}
                     onClick={() => {
-                      setReceiveCurrencyValue('ngn');
+                      setReceiveCurrencyValue('GBP');
                     }}
                   ></TCRadioSpan>
                   <TCValue
                     onClick={() => {
-                      setReceiveCurrencyValue('ngn');
+                      setReceiveCurrencyValue('GBP');
                     }}
                   >
-                    NGN
+                    GBP
                   </TCValue>
                 </TCRadioDiv>
                 <TCRadioDiv>
                   <TCRadioSpan
-                    active={receiveCurrency === 'usd' ? true : false}
+                    active={receiveCurrency === 'USD' ? true : false}
                     onClick={() => {
-                      setReceiveCurrencyValue('usd');
+                      setReceiveCurrencyValue('USD');
                     }}
                   ></TCRadioSpan>
                   <TCValue
                     onClick={() => {
-                      setReceiveCurrencyValue('usd');
+                      setReceiveCurrencyValue('USD');
                     }}
                   >
                     USD
@@ -180,14 +276,14 @@ const Transaction = () => {
                 </TCRadioDiv>
                 <TCRadioDiv>
                   <TCRadioSpan
-                    active={receiveCurrency === 'eur' ? true : false}
+                    active={receiveCurrency === 'EUR' ? true : false}
                     onClick={() => {
-                      setReceiveCurrencyValue('eur');
+                      setReceiveCurrencyValue('EUR');
                     }}
                   ></TCRadioSpan>
                   <TCValue
                     onClick={() => {
-                      setReceiveCurrencyValue('eur');
+                      setReceiveCurrencyValue('EUR');
                     }}
                   >
                     EUR
@@ -195,17 +291,46 @@ const Transaction = () => {
                 </TCRadioDiv>
               </TCRadioWrap>
             </TFCurrency>
-            {sendCurrency && receiveCurrency && (
-              <ReceivedDiv>
-                <Balancep>{receiver} will receive</Balancep>
-                <ReceivedValue>{receivedValue}</ReceivedValue>
-                <Balancep>
-                  at {enchangeRate} {sendCurrency}/{receiveCurrency}
-                </Balancep>
-              </ReceivedDiv>
-            )}
           </TFInnerDiv>
+          {sendCurrency && receiveCurrency && receiverUserName && (
+            <ReceivedDiv>
+              <Balancep>{receiverUserName} will receive</Balancep>
+              <ReceiveAmount>{receiveAmount}</ReceiveAmount>
+              <Balancep>
+                at {enchangeRate} {sendCurrency}/{receiveCurrency}
+              </Balancep>
+            </ReceivedDiv>
+          )}
         </TFormDiv>
+        <InputDiv>
+          <InputStyledLogin
+            type="text"
+            placeholder="input Username"
+            onChange={(e: any) => {
+              setUserNamesSearchText(e.target.value);
+            }}
+            onFocus={() => setInputFocused(true)}
+            onBlur={() =>
+              setTimeout(() => {
+                setInputFocused(false);
+              }, 200)
+            }
+            value={userNamesSearchText}
+            name="UserName"
+          />
+          {filteredUserNames && inputFocused && (
+            <UserNameDiv>
+              {filteredUserNames.map((username) => (
+                <UserNamesP
+                  onClick={() => setReceiverUserName(username['userName'])}
+                  key={username['_id']}
+                >
+                  {username['userName']}
+                </UserNamesP>
+              ))}
+            </UserNameDiv>
+          )}
+        </InputDiv>
         <ButtonWithLoader
           name="SEND"
           isLoading={isLoading}

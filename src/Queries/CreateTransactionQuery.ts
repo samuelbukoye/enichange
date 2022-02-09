@@ -11,7 +11,7 @@ type PropsArgs = {
 
 export const CreateTransactionQuery = async (props: PropsArgs) => {
   const { receiverUserName, sendAmount, sendCurrency, receiveCurrency } = props;
-  const url = `${Url}/login`;
+  const url = `${Url}/transaction`;
   const token = await store.getState().TokenReducer;
 
   try {

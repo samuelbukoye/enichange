@@ -26,7 +26,8 @@ export const NavH2 = styled.h2`
 `;
 export const NavDiv = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1em;
   justify-items: center;
   align-items: center;
 
@@ -34,9 +35,7 @@ export const NavDiv = styled.div`
     height: 40px;
   }
   @media screen and (max-width: 600px) {
-    align-self: flex-end;
     height: 40px;
-    width: 100%;
   }
 
   @media screen and (max-width: 400px) {
@@ -70,4 +69,24 @@ export const NavDivP = styled.p<{ active?: boolean }>`
 `;
 export const NavDivPA = styled(NavLink)`
   text-decoration: none;
+`;
+
+export const LogoutButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 0.2em 1em;
+  margin-left: 5px;
+  height: min-content;
+  color: darkblue;
+  background-color: pink;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 0px 2px #453a80, 0.5px 0px 1px #262041;
+
+  :hover {
+    box-shadow: 0.5px 0px 1px #262041;
+  }
 `;

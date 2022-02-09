@@ -135,6 +135,7 @@ export const TFButton = styled.button`
     box-shadow: 0.5px 0px 1px #262041;
   }
 `;
+
 export const TFSpan = styled.span`
   padding-right: 0.5em;
 `;

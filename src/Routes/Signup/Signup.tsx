@@ -48,6 +48,7 @@ const Signup = () => {
     setIsLoading(true);
     if (!isValidated()) {
       setIsLoading(false);
+      return;
     }
 
     console.log('no errors');
