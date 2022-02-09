@@ -25,8 +25,12 @@ import {
 import { GetTransactionsQuery } from '../../Queries/GetTransactionsQuery';
 import { useDispatch } from 'react-redux';
 import { GetUserInfoQuery } from '../../Queries/GetUserInfoQuery';
+import { useNavigate } from 'react-router-dom';
 
 const UserPage = () => {
+  const navigate = useNavigate();
+  const [token] = useState(store.getState().TokenReducer);
+  if (!token) navigate('/login');
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(store.getState().UserDataReducer);
