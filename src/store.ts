@@ -8,8 +8,7 @@ import RootReducer from './Reducers/RootReducer';
 
 const persistConfig = {
   key: 'root',
-  storage: storage,
-  // whitelist: ['authType'] // which reducer want to store
+  storage,
 };
 const persistedReducer = persistReducer(persistConfig, RootReducer);
 const middleware = applyMiddleware(thunk, logger);

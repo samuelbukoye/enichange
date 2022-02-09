@@ -147,37 +147,37 @@ const UserPage = () => {
           <TransactionsCol>Currency</TransactionsCol>
           <TransactionsCol>Created At</TransactionsCol>
           <TransactionsCol>Updated At</TransactionsCol>
-          {/* Transactions  */}
-          {userTransactions
-            .map((transaction: any, index: number) => (
-              <>
-                <TransactionsCell>{index + 1}</TransactionsCell>
-                <TransactionsCell>
-                  {getUserName(transaction.senderUserName)}
-                </TransactionsCell>
-                <TransactionsCell>
-                  {getUserName(transaction.receiverUserName)}
-                </TransactionsCell>
-                <TransactionsCell credit={transaction.credit}>
-                  {transaction.credit
-                    ? `+${transaction.receiveAmount}`
-                    : `+${transaction.sendAmount}`}
-                </TransactionsCell>
-                <TransactionsCell>
-                  {transaction.credit
-                    ? `${transaction.receiveCurrency}`
-                    : `${transaction.sendCurrency}`}
-                </TransactionsCell>
-                <TransactionsCell>
-                  {formatDate(transaction.createdAt)}
-                </TransactionsCell>
-                <TransactionsCell>
-                  {formatDate(transaction.updatedAt)}
-                </TransactionsCell>
-              </>
-            ))
-            .reverse()}
         </Transactions>
+        {/* Transactions  */}
+        {userTransactions
+          .map((transaction: any, index: number) => (
+            <Transactions key={transaction._id}>
+              <TransactionsCell>{index + 1}</TransactionsCell>
+              <TransactionsCell>
+                {getUserName(transaction.senderUserName)}
+              </TransactionsCell>
+              <TransactionsCell>
+                {getUserName(transaction.receiverUserName)}
+              </TransactionsCell>
+              <TransactionsCell credit={transaction.credit}>
+                {transaction.credit
+                  ? `+${transaction.receiveAmount}`
+                  : `+${transaction.sendAmount}`}
+              </TransactionsCell>
+              <TransactionsCell>
+                {transaction.credit
+                  ? `${transaction.receiveCurrency}`
+                  : `${transaction.sendCurrency}`}
+              </TransactionsCell>
+              <TransactionsCell>
+                {formatDate(transaction.createdAt)}
+              </TransactionsCell>
+              <TransactionsCell>
+                {formatDate(transaction.updatedAt)}
+              </TransactionsCell>
+            </Transactions>
+          ))
+          .reverse()}
       </UserPageWrapper>
     </Layout>
   );
