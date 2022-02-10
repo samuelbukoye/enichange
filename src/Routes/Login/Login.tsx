@@ -64,7 +64,7 @@ const Login = () => {
     } catch (error) {
       setIsLoading(false);
 
-      setError('Invalid login credentials!');
+      setError('Invalid username/email and password combination!');
       setTimeout(() => {
         setError('');
       }, 3000);

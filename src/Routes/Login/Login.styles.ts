@@ -39,9 +39,19 @@ export const FormTitle = styled.h2`
 
 export const ErrorMessage = styled.h4`
   text-transform: uppercase;
-  font-size: 2em;
+  font-size: 1em;
   color: red;
   text-align: center;
+  height: 10px;
+  @media (max-width: 650px) {
+    font-size: 0.7em;
+  }
+  @media (max-width: 500px) {
+    font-size: 0.6em;
+  }
+  @media (max-width: 360px) {
+    font-size: 0.4em;
+  }
 `;
 
 export const InputContainer = styled.div`
