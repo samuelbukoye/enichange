@@ -33,7 +33,7 @@ const Navbar = () => {
 
   return (
     <Nav>
-      <NavH2>SimbaProject</NavH2>
+      <NavH2>ENICHANGE</NavH2>
       {isLoggedIn ? (
         <NavDiv>
           <NavDivP>
