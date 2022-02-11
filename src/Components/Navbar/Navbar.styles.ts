@@ -13,7 +13,7 @@ export const Nav = styled.nav`
     padding: 0px 10px;
   }
   @media screen and (max-width: 500px) {
-    background: purple;
+    background: #06063d;
   }
 `;
 export const NavH2 = styled.h2`
@@ -96,7 +96,7 @@ export const LogoutButton = styled.button`
   }
 `;
 export const NavButton = styled.div`
-  @media (min-width: 500px) {
+  @media (min-width> 500px) {
     display: none;
   }
   display: block;
@@ -116,8 +116,8 @@ export const NavButton = styled.div`
   }
 `;
 export const NavDivMin = styled.div`
-  background: #9e079e;
-  @media (min-width: 500px) {
+  background: #06063d;
+  @media (min-width> 500px) {
     display: none;
   }
   width: 50%;
@@ -129,7 +129,7 @@ export const NavDivMin = styled.div`
 
 export const NavDivInnerMin = styled.div``;
 export const NavDivPMin = styled.p`
-  border-top: 1px solid #c048c0;
+  border-top: 1px solid #272774;
   margin: 0;
 `;
 export const NavDivPAMin = styled(NavLink)`
@@ -153,9 +153,9 @@ export const LogoutButtonMin = styled.button`
   font-weight: bold;
   width: 100%;
   height: 40px;
-  color: #f02828;
+  color: whitesmoke;
   border: none;
-  background-color: pink;
+  background-color: darkred;
 
   :hover {
     font-size: 16px;
