@@ -1,3 +1,16 @@
+You can check out this site out at [ENICHANGE](enichange.herokuapp.com)
+
+It is a money exchange application
+
+React, typescript, styled components \_frontend
+
+Node, express, mongoose, mongodb, \_backend
+You can create a random account with it and make different transactions
+
+Basically you can send money to any registered user including yourself just by selecting the username
+
+And then check the home page where it'll show all your transactions
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
