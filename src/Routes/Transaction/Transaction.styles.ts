@@ -73,6 +73,7 @@ export const BalanceP = styled.p`
   color: grey;
 `;
 export const InputDiv = styled.div`
+  position: relative;
   margin: 20px 0 10px;
 `;
 export const InputLabel = styled.label`
@@ -107,9 +108,10 @@ export const ReceiveAmount = styled.h3`
   margin-bottom: 3px;
 `;
 export const UserNamesDiv = styled.div`
+  position: absolute;
+  background-color: white;
   width: 100%;
-  max-height: 190px;
-  position: relative;
+  max-height: 120px;
   margin-top: 1px;
   border: 2px solid lightblue;
   border-bottom-left-radius: 10px;
