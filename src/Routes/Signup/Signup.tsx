@@ -127,8 +127,8 @@ const Signup = () => {
 
   // username
   const validateUserName = useCallback(() => {
-    if (userName.length < 4||userName.length >10) {
-      setErrorUserName('username must be at between 4 and 11 characters');
+    if (userName.length <= 4||userName.length >= 11) {
+      setErrorUserName('Username must be 5 and 10 characters');
       return false;
     }
     setErrorUserName('');
