@@ -61,13 +61,12 @@ const Login = () => {
 
       navigate('/');
       return;
-    } catch (error) {
+    } catch (error:any) {
       setIsLoading(false);
-
-      setError('Invalid username/email and password combination!');
+      setError(error);
       setTimeout(() => {
         setError('');
-      }, 3000);
+      }, 5000);
       return;
     }
   };

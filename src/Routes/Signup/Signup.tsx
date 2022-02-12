@@ -71,12 +71,12 @@ const Signup = () => {
 
       navigate('/');
       return;
-    } catch (error) {
+    } catch (error:any) {
       setIsLoading(false);
-      setError('Invalid signup credentials!');
+      setError(error);
       setTimeout(() => {
         setError('');
-      }, 3000);
+      }, 5000);
       return;
     }
   };
@@ -177,8 +177,8 @@ const Signup = () => {
   return (
     <Layout>
       <FormWrapper>
-        <FormTitle>Signup</FormTitle>
         <ErrorMessage>{error}</ErrorMessage>
+        <FormTitle>Signup</FormTitle>
         <InputContainer>
           <InputDiv>
             <InputStyled

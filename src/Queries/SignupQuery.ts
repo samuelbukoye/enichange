@@ -20,7 +20,7 @@ export const SignupQuery = async (props: PropsArgs) => {
       lastName,
     });
     return data;
-  } catch (err) {
-    throw err;
+  } catch (err:any) {
+    throw  err.response.data;
   }
 };

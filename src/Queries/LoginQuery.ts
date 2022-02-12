@@ -25,7 +25,7 @@ export const LoginQuery = async (props: PropsArgs) => {
       password,
     });
     return data;
-  } catch (err) {
-    throw err;
+  } catch (err:any) {
+    throw err.response.data;
   }
 };

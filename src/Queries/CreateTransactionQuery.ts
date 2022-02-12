@@ -28,7 +28,7 @@ export const CreateTransactionQuery = async (props: PropsArgs) => {
       }
     );
     return data;
-  } catch (err) {
-    throw err;
+  } catch (err:any) {
+    throw  err.response.data;
   }
 };

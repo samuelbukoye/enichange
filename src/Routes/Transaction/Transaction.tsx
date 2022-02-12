@@ -4,7 +4,7 @@ import Layout from '../../Components/Layout/Layout';
 
 import { GetRateAndPriceQuery } from '../../Queries/GetRateAndPriceQuery';
 import { store } from '../../store';
-import { FormTitle, FormWrapper } from '../Login/Login.styles';
+import { ErrorMessage, FormTitle, FormWrapper } from '../Login/Login.styles';
 import { MessageStyle } from '../Signup/Signup.styles';
 import { InputStyled as InputStyledLogin } from '../Login/Login.styles';
 import {
@@ -36,6 +36,7 @@ const Transaction = () => {
 
   const [userData] = useState(store.getState().UserDataReducer);
   const [successMessage, setSuccessMessage] = useState('');
+  const [error, setError] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState(2345.0);
@@ -148,15 +149,20 @@ const Transaction = () => {
         navigate('/');
       }, 2000);
       setIsLoading(false);
-    } catch {
+    } catch (err:any){
+      console.log(err)
       setIsLoading(false);
+      setError(err);
+      setTimeout(() => {
+        setError('');
+      }, 5000);
+      return;
     }
   };
 
   return (
     <Layout>
       <FormWrapper>
-        {successMessage && <FormSuccess>{successMessage}</FormSuccess>}
         <FormTitle>Transaction</FormTitle>
         <TFormDiv>
           <TFCurrencySend>
@@ -198,12 +204,12 @@ const Transaction = () => {
                   onClick={() => {
                     setSendCurrencyValue('EUR');
                   }}
-                ></TCRadioSpan>
+                  ></TCRadioSpan>
                 <TCValue
                   onClick={() => {
                     setSendCurrencyValue('EUR');
                   }}
-                >
+                  >
                   EUR
                 </TCValue>
               </TCRadioDiv>
@@ -338,6 +344,9 @@ const Transaction = () => {
             </ReceiverUserNameDiv>
           )}
         </TFormDiv>
+        <ErrorMessage>{error}</ErrorMessage>
+        {successMessage && <FormSuccess>{successMessage}</FormSuccess>}
+
         <ButtonWithLoader
           name="SEND"
           isLoading={isLoading}
