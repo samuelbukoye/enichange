@@ -150,7 +150,6 @@ const Transaction = () => {
       }, 2000);
       setIsLoading(false);
     } catch (err:any){
-      console.log(err)
       setIsLoading(false);
       setError(err);
       setTimeout(() => {
